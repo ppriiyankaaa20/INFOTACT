@@ -2,8 +2,9 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static
 import sqlite3
 
-
 class PyChronicle(App):
+    CSS_PATH="ui.tcss"
+    TITLE="PyChronicle"
 
     def get_execution(self):
         conn = sqlite3.connect("pychronicle.db")
@@ -28,7 +29,7 @@ class PyChronicle(App):
         return output
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        yield Header(show_clock=True)
 
         code = (
             "Code View\n\n"
@@ -38,9 +39,21 @@ class PyChronicle(App):
             "print(z)"
         )
 
-        yield Static(code, id="code")
+        yield Static(
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    "        CODE VIEW\n"
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    + code,
+    id="code"
+)
 
-        yield Static(self.get_execution(), id="timeline")
+        yield Static(
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    "   EXECUTION TIMELINE\n"
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    + self.get_execution(),
+    id="timeline"
+)
 
         yield Footer()
 
